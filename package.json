@@ -4,14 +4,17 @@
   "description": "FE projects backporting status",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Giovanni Gonzaga <giovanni@buildo.io>",
   "license": "MIT",
   "dependencies": {
+    "avenger": "^0.4.0-alpha.8",
     "express": "^4.14.0",
     "npm-check": "^5.4.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "request": "^2.79.0",
     "tmp": "^0.0.31"
   }

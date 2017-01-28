@@ -1,45 +1,5 @@
-const backporting = [
-  'buildo-react-container',
-  'buildo-react-components',
-  'avenger',
-  'react-avenger',
-  'rc-datepicker',
-  'react-flexview',
-  'react-autosize-textarea',
-  'metarpheus-js-http-api',
-  'local-date',
-  'react-cookie-banner',
-  'sass-flex-mixins',
-  'sass-variables-loader',
-  'metarpheus-tcomb',
-  'scriptoni',
-  'revenge',
-  'eslint-config-buildo',
-  'eslint-plugin-tcomb',
-  'smooth-release',
-];
-
-repos = [
-  // { url: 'git@github.com:buildo/lexdoit.git', dir: 'web' },
-  // { url: 'git@github.com:buildo/bobafett.git', dir: 'web' },
-  { url: 'git@github.com:buildo/gdsm.git', dir: 'web' },
-  // { url: 'git@github.com:buildo/hailadoc.git', dir: 'web' },
-  // { url: 'git@github.omnilab.our.buildo.io:buildo/aliniq.git', dir: 'qia/web' },
-  // { url: 'git@github.com:buildo/ipercron.git' },
-  // { url: 'git@github.com:buildo/buildo.io.git' },
-  // { url: 'git@github.com:buildo/state-react-router.git' },
-  // { url: 'git@github.com:buildo/oxway.git', dir: 'web' },
-].map(repo => {
-  const parts = repo.url.replace('git@', '').split(':');
-  const repoParts = parts[parts.length - 1].replace('.git', '').split('/');
-  return Object.assign({}, repo, {
-    owner: repoParts[0],
-    repo: repoParts[1],
-    githubUrl: parts[0]
-  });
-});
-
 const tmp = require('tmp');
+tmp.setGracefulCleanup();
 const npmCheck = require('npm-check');
 const request = require('request');
 const fs = require('fs');
@@ -51,21 +11,29 @@ const apiUrl = repo => {
   return `api.${repo.githubUrl}`;
 };
 
-const outdated = (folder) => {
-  console.log('> running outdated in', folder);
-  return npmCheck({ cwd: folder }).then(state => state.get('packages').map(p => ({
-    wanted: p.packageWanted,
-    latest: p.latest,
-    name: p.moduleName
-  })).reduce((acc, p) => Object.assign({}, acc, {
-    [p.name]: p
-  }), {}));
+const _outdated = (params) => {
+  const tmpDir = params.tmpDir;
+  const packageContents = params.packageContents;
+  const backporting = params.backporting;
+  console.log('> running outdated in', tmpDir);
+  fs.writeFileSync(`${tmpDir}/package.json`, packageContents, 'utf8');
+  return npmCheck({ cwd: tmpDir }).then(state =>
+    state.get('packages')
+    .map(p => ({
+      wanted: p.packageWanted,
+      latest: p.latest,
+      package: p.moduleName
+    }))
+    .filter(p => backporting.indexOf(p.package) !== -1)
+  );
 };
 
-const fetchPackage = (repo, path) => new Promise((resolve, reject) => {
-  console.log('fetching', repo.url, 'package.json');
+const _packageContents = (params) => new Promise((resolve, reject) => {
+  const repo = params.repo;
+  const url = `https://${apiUrl(repo)}/repos/${repo.owner}/${repo.repo}/contents/${repo.dir ? `${repo.dir}/` : ''}package.json`;
+  console.log('> fetching', url);
   request({
-    url: `https://${apiUrl(repo)}/repos/${repo.owner}/${repo.repo}/contents/${repo.dir ? `${repo.dir}/` : ''}package.json`,
+    url,
     headers: {
       Authorization: `token ${githubToken(repo)}`,
       Accept: 'application/vnd.github.v3.raw',
@@ -75,42 +43,46 @@ const fetchPackage = (repo, path) => new Promise((resolve, reject) => {
     if (err) {
       reject(err);
     } else {
-      fs.writeFileSync(`${path}/package.json`, contents, 'utf8');
-      resolve();
+      resolve(contents);
     }
   });
 });
 
-const backporto = () =>
-  Promise.all(repos.map(repo => new Promise((resolve, reject) => {
-    tmp.dir({ unsafeCleanup: true }, (err, path) => {
-      if (err) {
-        reject(err);
-      } else {
-        fetchPackage(repo, path).then(() => outdated(path).then(deps => ({
-          repo,
-          outdated: Object.keys(deps)
-            .filter(k => backporting.indexOf(k) !== -1)
-            .filter(k => deps[k].wanted !== deps[k].latest)
-            .map(k => ({ wanted: deps[k].wanted, latest: deps[k].latest, package: k }))
-        }))).then(resolve).catch(reject);
-      }
-    });
-  }))).then(outdatedRepos =>
-    outdatedRepos.filter(repo => repo.outdated.length > 0)
-      .map(repo =>
-        `\n${repo.repo.url}\n${JSON.stringify(repo.outdated, null, 2)}`
-      ).join('\n')
-  );
-
-const app = require('express')();
-app.get('*', (req, res) => {
-  backporto().then(out => {
-    res.writeHead(200);
-    res.end(out);
-  }).catch(err => {
-    res.writeHead(500);
-    res.end(JSON.stringify(err));
+const _tmpDir = (params) => new Promise((resolve, reject) => {
+  console.log(`> creating a tmpDir for`, params.repo.url);
+  tmp.dir({ unsafeCleanup: true }, (err, path) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(path);
+    }
   });
 });
-app.listen(3000)
+
+const cacheFetch = require('avenger/lib/cache/operators').cacheFetch;
+const Cache = require('avenger/lib/cache/Cache').Cache;
+const Expire = require('avenger/lib/cache/strategies').Expire;
+const compose = require('avenger/lib/fetch/operators').compose;
+const product = require('avenger/lib/fetch/operators').product;
+
+const expire1Hour = new Expire(1000 * 60 * 60);
+
+const __outdated = cacheFetch(_outdated, expire1Hour, new Cache({ name: 'outdated' }));
+const packageContents = cacheFetch(_packageContents, expire1Hour, new Cache({ name: 'packageContents' }));
+const tmpDir = cacheFetch(_tmpDir, expire1Hour, new Cache({ name: 'tmpDir' }));
+
+module.exports = (config) => {
+  console.log('> backporto');
+
+  const outdated = compose(
+    product([tmpDir, packageContents]),
+    ps => ({ tmpDir: ps[0], packageContents: ps[1], backporting: config.backporting }),
+    __outdated
+  );
+
+  return Promise.all(
+    config.repos.map(repo =>
+      outdated([{ repo }, { repo }]).then(outdated => ({ repo, outdated }))
+    )
+  );
+};
