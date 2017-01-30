@@ -5,9 +5,15 @@ const request = require('request');
 const fs = require('fs');
 
 const githubToken = repo => {
+  if (repo.githubUrl === 'github.omnilab.our.buildo.io') {
+    return process.env.OMNI_GITHUB_TOKEN;
+  }
   return process.env.GITHUB_TOKEN;
 };
 const apiUrl = repo => {
+  if (repo.githubUrl === 'github.omnilab.our.buildo.io') {
+    return `${repo.githubUrl}/api/v3`;
+  }
   return `api.${repo.githubUrl}`;
 };
 
