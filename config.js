@@ -23,6 +23,7 @@ module.exports.repos = [
   { url: 'git@github.com:buildo/lexdoit.git', dir: 'web' },
   { url: 'git@github.com:buildo/bobafett.git', dir: 'web' },
   { url: 'git@github.com:buildo/gdsm.git', dir: 'web' },
+  { url: 'git@github.com:buildo/gdsm.git', dir: 'backoffice' },
   { url: 'git@github.com:buildo/hailadoc.git', dir: 'web' },
   { url: 'git@github.omnilab.our.buildo.io:buildo/aliniq.git', dir: 'qia/web' },
   { url: 'git@github.omnilab.our.buildo.io:buildo/ams.git', dir: 'web' },
