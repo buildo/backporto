@@ -5,7 +5,9 @@ publish:
     password: $$QUAY_PASSWORD
     email: $$QUAY_EMAIL
     repo: buildo/backporto
+    force_tag: true
     tag:
+      - latest
       - $$COMMIT
     when:
       branch: master
