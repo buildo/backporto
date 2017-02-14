@@ -1,0 +1,22 @@
+publish:
+  docker:
+    registry: quay.io
+    username: $$QUAY_USERNAME
+    password: $$QUAY_PASSWORD
+    email: $$QUAY_EMAIL
+    repo: buildo/backporto
+    tag:
+      - $$COMMIT
+    when:
+      branch: master
+
+deploy:
+  ssh:
+    host: jar.srv.buildo.io
+    user: root
+    port: 22
+    commands:
+      - crane lift backporto
+    when:
+      branch: master
+
