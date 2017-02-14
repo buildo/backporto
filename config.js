@@ -17,6 +17,7 @@ module.exports.backporting = [
   'eslint-config-buildo',
   'eslint-plugin-tcomb',
   'smooth-release',
+  'babel-preset-buildo'
 ];
 
 module.exports.repos = [
