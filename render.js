@@ -30,8 +30,8 @@ module.exports = (config, out) => ReactDOMServer.renderToStaticMarkup(
       [e('th', { key: '' }, '\\')].concat(config.backporting.map(b => e('th', { key: b }, `${b} (${latest(b, out)})`)))
     ),
     e('tbody', null,
-      out.map((o, i) => e('tr', { key: o.repo.repo, style: { backgroundColor: i % 2 === 0 ? '#f0f0f0' : '#fff' } },
-        [e('td', { key: '' }, o.repo.repo)].concat(config.backporting.map(b => e('td', { key: b }, cell(b, o))))
+      out.map((o, i) => e('tr', { key: `${o.repo.repo}-${o.repo.dir || '/'}`, style: { backgroundColor: i % 2 === 0 ? '#f0f0f0' : '#fff' } },
+        [e('td', { key: '' }, `${o.repo.repo}${o.repo.dir ? `/${o.repo.dir}` : ''}`)].concat(config.backporting.map(b => e('td', { key: b }, cell(b, o))))
       ))
     )
   ])
