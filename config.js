@@ -1,25 +1,30 @@
 module.exports.backporting = [
-  'buildo-react-container',
+  // components
   'buildo-react-components',
+  'rc-datepicker',
+  'react-flexview',
+  'react-autosize-textarea',
+  'react-cookie-banner',
+  'revenge',
+  // data
+  'buildo-react-container',
   'avenger',
   'react-avenger',
   'buildo-state',
   'buildo-state-react-router',
-  'rc-datepicker',
-  'react-flexview',
-  'react-autosize-textarea',
+  // build & scripts
+  'sass-variables-loader',
+  'scriptoni',
+  'smooth-release',
+  'babel-preset-buildo',
+  // misc
   'metarpheus-js-http-api',
   'local-date',
-  'react-cookie-banner',
-  'sass-variables-loader',
-  'metarpheus-tcomb',
-  'scriptoni',
-  'revenge',
-  'smooth-release',
-  'babel-preset-buildo'
+  'metarpheus-tcomb'
 ];
 
 module.exports.repos = [
+  // final projects
   { url: 'git@github.com:buildo/lexdoit.git', dir: 'web' },
   { url: 'git@github.com:buildo/bobafett.git', dir: 'web' },
   { url: 'git@github.com:buildo/gdsm.git', dir: 'web' },
@@ -30,7 +35,7 @@ module.exports.repos = [
   { url: 'git@github.com:buildo/ipercron.git' },
   { url: 'git@github.com:buildo/oxway.git', dir: 'web' },
   { url: 'git@github.com:buildo/buildo.io.git' },
-
+  // libs
   { url: 'git@github.com:buildo/state-react-router.git' },
   { url: 'git@github.com:buildo/react-components.git' },
   { url: 'git@github.com:buildo/metarpheus-js-http-api.git' },
