@@ -1,5 +1,7 @@
-React = require('react');
-ReactDOMServer = require('react-dom/server');
+const React = require('react');
+const ReactDOMServer = require('react-dom/server');
+const semver = require('semver');
+
 const e = React.createElement;
 
 const latest = (b, out) => {
@@ -18,7 +20,7 @@ const cell = (backporting, out) => {
   if (!outdated) {
     return '';
   }
-  if (outdated.wanted === outdated.latest) {
+  if (semver.gte(outdated.wanted, outdated.latest)) {
     return '👍'
   }
   return `💩 (${outdated.wanted})`;
