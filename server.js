@@ -7,7 +7,15 @@ const app = require('express')();
 app.get('/', (req, res) => {
   backporto(config).then(out => {
     res.writeHead(200);
-    res.end(render(config, out));
+    res.end(`<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <title>backporto</title>
+  </head>
+  <body>
+    ${render(config, out)}
+  </body>`
+    );
     console.log('> done');
   }).catch(err => {
     console.log('> error', err, JSON.stringify(err));
