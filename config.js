@@ -38,10 +38,16 @@ module.exports.repos = [
   // libs
   { url: 'git@github.com:buildo/state-react-router.git' },
   { url: 'git@github.com:buildo/react-components.git' },
+  { url: 'git@github.com:buildo/react-flexview.git' },
+  { url: 'git@github.com:buildo/react-autosize-textarea.git' },
+  { url: 'git@github.com:buildo/react-placeholder.git' },
+  { url:  'git@github.com:buildo/react-input-children.git' },
   { url: 'git@github.com:buildo/metarpheus-js-http-api.git' },
+  { url: 'git@github.com:buildo/formo.git' },
   { url: 'git@github.com:buildo/scriptoni.git' },
   { url: 'git@github.com:buildo/state.git' },
   { url: 'git@github.com:buildo/react-avenger.git' },
+  { url: 'git@github.com:buildo/react-container.git' }
 ].map(repo => {
   const parts = repo.url.replace('git@', '').split(':');
   const repoParts = parts[parts.length - 1].replace('.git', '').split('/');
