@@ -47,7 +47,8 @@ module.exports.repos = [
   { url: 'git@github.com:buildo/scriptoni.git' },
   { url: 'git@github.com:buildo/state.git' },
   { url: 'git@github.com:buildo/react-avenger.git' },
-  { url: 'git@github.com:buildo/react-container.git' }
+  { url: 'git@github.com:buildo/react-container.git' },
+  { url: 'git@github.com:buildo/rc-datepicker.git' }
 ].map(repo => {
   const parts = repo.url.replace('git@', '').split(':');
   const repoParts = parts[parts.length - 1].replace('.git', '').split('/');
