@@ -34,7 +34,7 @@ module.exports.repos = [
   { url: 'git@github.omnilab.our.buildo.io:buildo/aliniq.git', dir: 'qia/web' },
   { url: 'git@github.com:buildo/ipercron.git' },
   { url: 'git@github.com:buildo/buildo.io.git' },
-  { url: 'git@github.com:buildo/webseed.git' }
+  { url: 'git@github.com:buildo/webseed.git' },
   // libs
   { url: 'git@github.com:buildo/state-react-router.git' },
   { url: 'git@github.com:buildo/react-components.git' },
