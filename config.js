@@ -1,4 +1,6 @@
 module.exports.backporting = [
+  // react (no react-dom as they must be in sync anyway)
+  'react',
   // components
   'buildo-react-components',
   'rc-datepicker',
@@ -29,12 +31,10 @@ module.exports.repos = [
   { url: 'git@github.com:buildo/bobafett.git', dir: 'web' },
   { url: 'git@github.com:buildo/gdsm.git', dir: 'web' },
   { url: 'git@github.com:buildo/gdsm.git', dir: 'backoffice' },
-  { url: 'git@github.com:buildo/hailadoc.git', dir: 'web' },
   { url: 'git@github.omnilab.our.buildo.io:buildo/aliniq.git', dir: 'qia/web' },
-  { url: 'git@github.omnilab.our.buildo.io:buildo/ams.git', dir: 'web' },
   { url: 'git@github.com:buildo/ipercron.git' },
-  { url: 'git@github.com:buildo/oxway.git', dir: 'web' },
   { url: 'git@github.com:buildo/buildo.io.git' },
+  { url: 'git@github.com:buildo/webseed.git' }
   // libs
   { url: 'git@github.com:buildo/state-react-router.git' },
   { url: 'git@github.com:buildo/react-components.git' },
