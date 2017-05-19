@@ -23,7 +23,7 @@ const cell = (backporting, out) => {
   if (semver.gte(outdated.wanted, outdated.latest)) {
     return '👍'
   }
-  if (semver.diff(outdated.wanted, outdated.latest) === 'major') {
+  if (!semver.satisfies(outdated.latest, `^${outdated.wanted}`)) {
     return `💩 (${outdated.wanted})`;
   }
   return `😑 (${outdated.wanted})`;
