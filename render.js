@@ -23,7 +23,10 @@ const cell = (backporting, out) => {
   if (semver.gte(outdated.wanted, outdated.latest)) {
     return '👍'
   }
-  return `💩 (${outdated.wanted})`;
+  if (semver.diff(outdated.wanted, outdated.latest) === 'major') {
+    return `💩 (${outdated.wanted})`;
+  }
+  return `😑 (${outdated.wanted})`;
 };
 
 module.exports = (config, out) => ReactDOMServer.renderToStaticMarkup(
