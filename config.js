@@ -7,6 +7,7 @@ module.exports.backporting = [
   'react-flexview',
   'react-autosize-textarea',
   'react-cookie-banner',
+  'react-input-children',
   'revenge',
   // data
   'buildo-react-container',
@@ -14,6 +15,7 @@ module.exports.backporting = [
   'react-avenger',
   'buildo-state',
   'buildo-state-react-router',
+  'react-formo',
   // build & scripts
   'sass-variables-loader',
   'scriptoni',
