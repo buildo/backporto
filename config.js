@@ -33,7 +33,7 @@ module.exports.repos = [
   { url: 'git@github.com:buildo/bobafett.git', dir: 'web' },
   { url: 'git@github.com:buildo/gdsm.git', dir: 'web' },
   { url: 'git@github.com:buildo/gdsm.git', dir: 'backoffice' },
-  { url: 'git@github.omnilab.our.buildo.io:buildo/aliniq.git', dir: 'qia/web' },
+  { url: 'git@github.omnilab.our.buildo.io:buildo/alinity-pro.git', dir: 'qia/web' },
   { url: 'git@github.com:buildo/ipercron.git' },
   { url: 'git@github.com:buildo/buildo.io.git' },
   { url: 'git@github.com:buildo/webseed.git' },
