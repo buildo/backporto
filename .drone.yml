@@ -1,23 +1,25 @@
-publish:
+pipeline:
+
   docker:
+    image: plugins/docker
     registry: quay.io
-    username: $$QUAY_USERNAME
-    password: $$QUAY_PASSWORD
-    email: $$QUAY_EMAIL
-    repo: buildo/backporto
+    secrets: [ docker_username, docker_password, docker_email ]
+    repo: quay.io/buildo/backporto
     force_tag: true
     tag:
       - latest
-      - $$COMMIT
+      - ${DRONE_COMMIT_SHA}
     when:
       branch: master
 
-deploy:
-  ssh:
+  deploy:
+    image: appleboy/drone-ssh
     host: jar.srv.buildo.io
     user: root
     port: 22
-    commands:
+    secrets: [ ssh_key ]
+    command_timeout: 300
+    script:
       - crane lift backporto
     when:
       branch: master
